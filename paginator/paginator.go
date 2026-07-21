@@ -1,200 +1,78 @@
-// Package paginator provides a Bubble Tea package for calculating pagination
-// and rendering pagination info. Note that this package does not render actual
-// pages: it's purely for handling keystrokes related to pagination, and
-// rendering pagination status.
 package paginator
 
 import (
-	"fmt"
-
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 )
 
-// Type specifies the way we render pagination.
 type Type int
 
-// Pagination rendering options.
 const (
 	Arabic Type = iota
 	Dots
 )
 
-// KeyMap is the key bindings for different actions within the paginator.
 type KeyMap struct {
 	PrevPage key.Binding
 	NextPage key.Binding
 }
 
-// DefaultKeyMap is the default set of key bindings for navigating and acting
-// upon the paginator.
-func DefaultKeyMap() KeyMap {
-	return KeyMap{
-		PrevPage: key.NewBinding(key.WithKeys("pgup", "left", "h")),
-		NextPage: key.NewBinding(key.WithKeys("pgdown", "right", "l")),
-	}
-}
+func DefaultKeyMap() KeyMap { _ = "STUB: not implemented"; return *new(KeyMap) }
 
-// Model is the Bubble Tea model for this user interface.
 type Model struct {
-	// Type configures how the pagination is rendered (Arabic, Dots).
 	Type Type
-	// Page is the current page number.
+
 	Page int
-	// PerPage is the number of items per page.
+
 	PerPage int
-	// TotalPages is the total number of pages.
+
 	TotalPages int
-	// ActiveDot is used to mark the current page under the Dots display type.
+
 	ActiveDot string
-	// InactiveDot is used to mark inactive pages under the Dots display type.
+
 	InactiveDot string
-	// ArabicFormat is the printf-style format to use for the Arabic display type.
+
 	ArabicFormat string
 
-	// KeyMap encodes the keybindings recognized by the widget.
 	KeyMap KeyMap
 }
 
-// SetTotalPages is a helper function for calculating the total number of pages
-// from a given number of items. Its use is optional since this pager can be
-// used for other things beyond navigating sets. Note that it both returns the
-// number of total pages and alters the model.
-func (m *Model) SetTotalPages(items int) int {
-	if items < 1 {
-		return m.TotalPages
-	}
-	n := items / m.PerPage
-	if items%m.PerPage > 0 {
-		n++
-	}
-	m.TotalPages = n
-	return n
-}
+func (m *Model) SetTotalPages(items int) int { _ = "STUB: not implemented"; return 0 }
 
-// ItemsOnPage is a helper function for returning the number of items on the
-// current page given the total number of items passed as an argument.
-func (m Model) ItemsOnPage(totalItems int) int {
-	if totalItems < 1 {
-		return 0
-	}
-	start, end := m.GetSliceBounds(totalItems)
-	return end - start
-}
+func (m Model) ItemsOnPage(totalItems int) int { _ = "STUB: not implemented"; return 0 }
 
-// GetSliceBounds is a helper function for paginating slices. Pass the length
-// of the slice you're rendering and you'll receive the start and end bounds
-// corresponding to the pagination. For example:
-//
-//	bunchOfStuff := []stuff{...}
-//	start, end := model.GetSliceBounds(len(bunchOfStuff))
-//	sliceToRender := bunchOfStuff[start:end]
 func (m *Model) GetSliceBounds(length int) (start int, end int) {
-	start = m.Page * m.PerPage
-	end = min(m.Page*m.PerPage+m.PerPage, length)
-	return start, end
+	_ = "STUB: not implemented"
+	return 0, 0
 }
 
-// PrevPage is a helper function for navigating one page backward. It will not
-// page beyond the first page (i.e. page 0).
-func (m *Model) PrevPage() {
-	if m.Page > 0 {
-		m.Page--
-	}
-}
+func (m *Model) PrevPage() { _ = "STUB: not implemented"; return }
 
-// NextPage is a helper function for navigating one page forward. It will not
-// page beyond the last page (i.e. totalPages - 1).
-func (m *Model) NextPage() {
-	if !m.OnLastPage() {
-		m.Page++
-	}
-}
+func (m *Model) NextPage() { _ = "STUB: not implemented"; return }
 
-// OnLastPage returns whether or not we're on the last page.
-func (m Model) OnLastPage() bool {
-	return m.Page == m.TotalPages-1
-}
+func (m Model) OnLastPage() bool { _ = "STUB: not implemented"; return false }
 
-// OnFirstPage returns whether or not we're on the first page.
-func (m Model) OnFirstPage() bool {
-	return m.Page == 0
-}
+func (m Model) OnFirstPage() bool { _ = "STUB: not implemented"; return false }
 
-// Option is used to set options in New.
 type Option func(*Model)
 
-// New creates a new model with defaults.
-func New(opts ...Option) Model {
-	m := Model{
-		Type:         Arabic,
-		Page:         0,
-		PerPage:      1,
-		TotalPages:   1,
-		KeyMap:       DefaultKeyMap(),
-		ActiveDot:    "•",
-		InactiveDot:  "○",
-		ArabicFormat: "%d/%d",
-	}
+func New(opts ...Option) Model { _ = "STUB: not implemented"; return *new(Model) }
 
-	for _, opt := range opts {
-		opt(&m)
-	}
+func WithTotalPages(totalPages int) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-	return m
-}
+func WithPerPage(perPage int) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// WithTotalPages sets the total pages.
-func WithTotalPages(totalPages int) Option {
-	return func(m *Model) {
-		m.TotalPages = totalPages
-	}
-}
-
-// WithPerPage sets the total pages.
-func WithPerPage(perPage int) Option {
-	return func(m *Model) {
-		m.PerPage = perPage
-	}
-}
-
-// Update is the Tea update function which binds keystrokes to pagination.
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
-	switch msg := msg.(type) {
-	case tea.KeyPressMsg:
-		switch {
-		case key.Matches(msg, m.KeyMap.NextPage):
-			m.NextPage()
-		case key.Matches(msg, m.KeyMap.PrevPage):
-			m.PrevPage()
-		}
-	}
-
-	return m, nil
+	_ = "STUB: not implemented"
+	return *new(Model), *new(tea.Cmd)
 }
 
-// View renders the pagination to a string.
 func (m Model) View() string {
-	switch m.Type { //nolint:exhaustive
-	case Dots:
-		return m.dotsView()
-	default:
-		return m.arabicView()
-	}
+	_ = "STUB: not implemented"
+	//nolint:exhaustive
+	return ""
 }
 
-func (m Model) dotsView() string {
-	var s string
-	for i := range m.TotalPages {
-		if i == m.Page {
-			s += m.ActiveDot
-			continue
-		}
-		s += m.InactiveDot
-	}
-	return s
-}
+func (m Model) dotsView() string { _ = "STUB: not implemented"; return "" }
 
-func (m Model) arabicView() string {
-	return fmt.Sprintf(m.ArabicFormat, m.Page+1, m.TotalPages)
-}
+func (m Model) arabicView() string { _ = "STUB: not implemented"; return "" }

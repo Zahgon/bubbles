@@ -1,8 +1,6 @@
-// Package stopwatch provides a simple stopwatch component.
 package stopwatch
 
 import (
-	"sync/atomic"
 	"time"
 
 	tea "charm.land/bubbletea/v2"
@@ -10,159 +8,61 @@ import (
 
 var lastID int64
 
-func nextID() int {
-	return int(atomic.AddInt64(&lastID, 1))
-}
+func nextID() int { _ = "STUB: not implemented"; return 0 }
 
-// Option is a configuration option in [New]. For example:
-//
-//	timer := New(time.Second*10, WithInterval(5*time.Second))
 type Option func(*Model)
 
-// WithInterval is an option for setting the interval between ticks. Pass as
-// an argument to [New].
-func WithInterval(interval time.Duration) Option {
-	return func(m *Model) {
-		m.Interval = interval
-	}
-}
+func WithInterval(interval time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// TickMsg is a message that is sent on every timer tick.
 type TickMsg struct {
-	// ID is the identifier of the stopwatch that sends the message. This makes
-	// it possible to determine which stopwatch a tick belongs to when there
-	// are multiple stopwatches running.
-	//
-	// Note, however, that a stopwatch will reject ticks from other
-	// stopwatches, so it's safe to flow all TickMsgs through all stopwatches
-	// and have them still behave appropriately.
 	ID  int
 	tag int
 }
 
-// StartStopMsg is sent when the stopwatch should start or stop.
 type StartStopMsg struct {
 	ID      int
 	running bool
 }
 
-// ResetMsg is sent when the stopwatch should reset.
 type ResetMsg struct {
 	ID int
 }
 
-// Model for the stopwatch component.
 type Model struct {
 	d       time.Duration
 	id      int
 	tag     int
 	running bool
 
-	// How long to wait before every tick. Defaults to 1 second.
 	Interval time.Duration
 }
 
-// New creates a new stopwatch with 1s interval.
-func New(opts ...Option) Model {
-	m := Model{
-		id: nextID(),
-	}
+func New(opts ...Option) Model { _ = "STUB: not implemented"; return *new(Model) }
 
-	for _, opt := range opts {
-		opt(&m)
-	}
-	return m
-}
+func (m Model) ID() int { _ = "STUB: not implemented"; return 0 }
 
-// ID returns the unique ID of the model.
-func (m Model) ID() int {
-	return m.id
-}
+func (m Model) Init() tea.Cmd { _ = "STUB: not implemented"; return *new(tea.Cmd) }
 
-// Init starts the stopwatch.
-func (m Model) Init() tea.Cmd {
-	return m.Start()
-}
+func (m Model) Start() tea.Cmd { _ = "STUB: not implemented"; return *new(tea.Cmd) }
 
-// Start starts the stopwatch.
-func (m Model) Start() tea.Cmd {
-	return tea.Sequence(func() tea.Msg {
-		return StartStopMsg{ID: m.id, running: true}
-	}, tick(m.id, m.tag, m.Interval))
-}
+func (m Model) Stop() tea.Cmd { _ = "STUB: not implemented"; return *new(tea.Cmd) }
 
-// Stop stops the stopwatch.
-func (m Model) Stop() tea.Cmd {
-	return func() tea.Msg {
-		return StartStopMsg{ID: m.id, running: false}
-	}
-}
+func (m Model) Toggle() tea.Cmd { _ = "STUB: not implemented"; return *new(tea.Cmd) }
 
-// Toggle stops the stopwatch if it is running and starts it if it is stopped.
-func (m Model) Toggle() tea.Cmd {
-	if m.Running() {
-		return m.Stop()
-	}
-	return m.Start()
-}
+func (m Model) Reset() tea.Cmd { _ = "STUB: not implemented"; return *new(tea.Cmd) }
 
-// Reset resets the stopwatch to 0.
-func (m Model) Reset() tea.Cmd {
-	return func() tea.Msg {
-		return ResetMsg{ID: m.id}
-	}
-}
+func (m Model) Running() bool { _ = "STUB: not implemented"; return false }
 
-// Running returns true if the stopwatch is running or false if it is stopped.
-func (m Model) Running() bool {
-	return m.running
-}
-
-// Update handles the timer tick.
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
-	switch msg := msg.(type) {
-	case StartStopMsg:
-		if msg.ID != m.id {
-			return m, nil
-		}
-		m.running = msg.running
-	case ResetMsg:
-		if msg.ID != m.id {
-			return m, nil
-		}
-		m.d = 0
-	case TickMsg:
-		if !m.running || msg.ID != m.id {
-			break
-		}
-
-		// If a tag is set, and it's not the one we expect, reject the message.
-		// This prevents the stopwatch from receiving too many messages and
-		// thus ticking too fast.
-		if msg.tag > 0 && msg.tag != m.tag {
-			return m, nil
-		}
-
-		m.d += m.Interval
-		m.tag++
-		return m, tick(m.id, m.tag, m.Interval)
-	}
-
-	return m, nil
+	_ = "STUB: not implemented"
+	return *new(Model), *new(tea.Cmd)
 }
 
-// Elapsed returns the time elapsed.
-func (m Model) Elapsed() time.Duration {
-	return m.d
-}
+func (m Model) Elapsed() time.Duration { _ = "STUB: not implemented"; return *new(time.Duration) }
 
-// View of the timer component.
-func (m Model) View() string {
-	return m.d.String()
-}
+func (m Model) View() string { _ = "STUB: not implemented"; return "" }
 
 func tick(id int, tag int, d time.Duration) tea.Cmd {
-	return tea.Tick(d, func(_ time.Time) tea.Msg {
-		return TickMsg{ID: id, tag: tag}
-	})
+	_ = "STUB: not implemented"
+	return *new(tea.Cmd)
 }
