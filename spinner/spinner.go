@@ -1,29 +1,21 @@
-// Package spinner provides a spinner component for Bubble Tea applications.
 package spinner
 
 import (
-	"sync/atomic"
 	"time"
 
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 )
 
-// Internal ID management. Used during animating to ensure that frame messages
-// are received only by spinner components that sent them.
 var lastID int64
 
-func nextID() int {
-	return int(atomic.AddInt64(&lastID, 1))
-}
+func nextID() int { _ = "STUB: not implemented"; return 0 }
 
-// Spinner is a set of frames used in animating the spinner.
 type Spinner struct {
 	Frames []string
 	FPS    time.Duration
 }
 
-// Some spinners to choose from. You could also make your own.
 var (
 	Line = Spinner{
 		Frames: []string{"|", "/", "-", "\\"},
@@ -83,17 +75,9 @@ var (
 	}
 )
 
-// Model contains the state for the spinner. Use New to create new models
-// rather than using Model as a struct literal.
 type Model struct {
-	// Spinner settings to use. See type Spinner.
 	Spinner Spinner
 
-	// Style sets the styling for the spinner. Most of the time you'll just
-	// want foreground and background coloring, and potentially some padding.
-	//
-	// For an introduction to styling with Lip Gloss see:
-	// https://github.com/charmbracelet/lipgloss
 	Style lipgloss.Style
 
 	frame int
@@ -101,111 +85,29 @@ type Model struct {
 	tag   int
 }
 
-// ID returns the spinner's unique ID.
-func (m Model) ID() int {
-	return m.id
-}
+func (m Model) ID() int { _ = "STUB: not implemented"; return 0 }
 
-// New returns a model with default values.
-func New(opts ...Option) Model {
-	m := Model{
-		Spinner: Line,
-		id:      nextID(),
-	}
+func New(opts ...Option) Model { _ = "STUB: not implemented"; return *new(Model) }
 
-	for _, opt := range opts {
-		opt(&m)
-	}
-
-	return m
-}
-
-// TickMsg indicates that the timer has ticked and we should render a frame.
 type TickMsg struct {
 	Time time.Time
 	tag  int
 	ID   int
 }
 
-// Update is the Tea update function.
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
-	switch msg := msg.(type) {
-	case TickMsg:
-		// If an ID is set, and the ID doesn't belong to this spinner, reject
-		// the message.
-		if msg.ID > 0 && msg.ID != m.id {
-			return m, nil
-		}
-
-		// If a tag is set, and it's not the one we expect, reject the message.
-		// This prevents the spinner from receiving too many messages and
-		// thus spinning too fast.
-		if msg.tag > 0 && msg.tag != m.tag {
-			return m, nil
-		}
-
-		m.frame++
-		if m.frame >= len(m.Spinner.Frames) {
-			m.frame = 0
-		}
-
-		m.tag++
-		return m, m.tick(m.id, m.tag)
-	default:
-		return m, nil
-	}
+	_ = "STUB: not implemented"
+	return *new(Model), *new(tea.Cmd)
 }
 
-// View renders the model's view.
-func (m Model) View() string {
-	if m.frame >= len(m.Spinner.Frames) {
-		return "(error)"
-	}
+func (m Model) View() string { _ = "STUB: not implemented"; return "" }
 
-	return m.Style.Render(m.Spinner.Frames[m.frame])
-}
+func (m Model) Tick() tea.Msg { _ = "STUB: not implemented"; return *new(tea.Msg) }
 
-// Tick is the command used to advance the spinner one frame. Use this command
-// to effectively start the spinner.
-func (m Model) Tick() tea.Msg {
-	return TickMsg{
-		// The time at which the tick occurred.
-		Time: time.Now(),
+func (m Model) tick(id, tag int) tea.Cmd { _ = "STUB: not implemented"; return *new(tea.Cmd) }
 
-		// The ID of the spinner that this message belongs to. This can be
-		// helpful when routing messages, however bear in mind that spinners
-		// will ignore messages that don't contain ID by default.
-		ID: m.id,
-
-		tag: m.tag,
-	}
-}
-
-func (m Model) tick(id, tag int) tea.Cmd {
-	return tea.Tick(m.Spinner.FPS, func(t time.Time) tea.Msg {
-		return TickMsg{
-			Time: t,
-			ID:   id,
-			tag:  tag,
-		}
-	})
-}
-
-// Option is used to set options in New. For example:
-//
-//	spinner := New(WithSpinner(Dot))
 type Option func(*Model)
 
-// WithSpinner is an option to set the spinner. Pass this to [Spinner.New].
-func WithSpinner(spinner Spinner) Option {
-	return func(m *Model) {
-		m.Spinner = spinner
-	}
-}
+func WithSpinner(spinner Spinner) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// WithStyle is an option to set the spinner style. Pass this to [Spinner.New].
-func WithStyle(style lipgloss.Style) Option {
-	return func(m *Model) {
-		m.Style = style
-	}
-}
+func WithStyle(style lipgloss.Style) Option { _ = "STUB: not implemented"; return *new(Option) }

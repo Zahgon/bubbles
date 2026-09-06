@@ -3,19 +3,8 @@
 
 package filepicker
 
-import (
-	"syscall"
-)
+func IsHidden(file string) (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-// IsHidden reports whether a file is hidden or not.
-func IsHidden(file string) (bool, error) {
-	pointer, err := syscall.UTF16PtrFromString(file)
-	if err != nil {
-		return false, err //nolint:wrapcheck
-	}
-	attributes, err := syscall.GetFileAttributes(pointer)
-	if err != nil {
-		return false, err //nolint:wrapcheck
-	}
-	return attributes&syscall.FILE_ATTRIBUTE_HIDDEN != 0, nil
-}
+//nolint:wrapcheck
+
+//nolint:wrapcheck
